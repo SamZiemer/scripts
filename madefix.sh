@@ -1,0 +1,9 @@
+#!/bin/sh
+#Syntax: madefix $Version $LPE
+
+cd ~/repos/fp-dev-tool
+echo -e "\n""Updating the hot fix repository:""\n"
+./fp-dev-tool.sh $1
+cd cache/$1
+echo -e "\n""Hotfixes that resolve LPE-"$2":""\n"
+grep -i $2 *.xml
