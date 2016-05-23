@@ -3,6 +3,8 @@ import com.liferay.portal.kernel.util.GetterUtil
 import com.liferay.portal.kernel.util.StringBundler
 import com.liferay.portal.security.auth.CompanyThreadLocal
 import com.liferay.portal.util.PropsValues
+import com.liferay.portlet.documentlibrary.NoSuchFileException
+import com.liferay.portlet.documentlibrary.model.DLFileEntry
 import com.liferay.portlet.documentlibrary.model.DLFileVersion
 import com.liferay.portlet.documentlibrary.service.DLFileVersionLocalServiceUtil
 import com.liferay.portlet.documentlibrary.store.DLStoreUtil
@@ -47,23 +49,33 @@ for (dlFolderDir in companyDir.listFiles()) {
 	findFiles(dlFolderDir, sb, fileNames);
 }
 
-sb.append("<h1>Entries with file in another location</h1><table border=1><tr><th>Orphaned Entries Name</th><th>Orphaned Entry file ID</th><th>File Name</th><th>Path to File</th></tr>");
+sb.append("<h1>Entries with file in another location</h1><div style=\" width: 100%; overflow-x:scroll; \"><table border=1><tr><th nowrap='nowrap'>Orphaned Entry Name</th><th nowrap='nowrap'>Orphaned Entry file ID</th><th nowrap='nowrap'>File Name</th><th nowrap='nowrap'>Old File Path</th><th nowrap='nowrap'>New File Path</th></tr>");
 
 for (DLFileVersion entry : orphanedEntries) {
 	file = fileNames.get(entry.getFileEntry().name);
 	if (index != null) {
-		sb.append("<tr><td>");
+		DLFileEntry dlFileEntry= entry.getFileEntry();
+		sb.append("<tr><td nowrap='nowrap'>");
 		sb.append(entry.getFileEntry().name);
-		sb.append("</td><td>");
+		sb.append("</td><td nowrap='nowrap'>");
 		sb.append(entry.fileEntryId);
-		sb.append("</td><td>");
+		sb.append("</td><td nowrap='nowrap'>");
 		sb.append(file.getName());
-		sb.append("</td><td>");
-		sb.append(file.parentFile.absolutePath);
+		sb.append("</td><td nowrap='nowrap'>");
+		sb.append(file.absolutePath);
+		sb.append("</td><td nowrap='nowrap'>");
+		try {
+			dlFileEntry.getContentStream();
+		} catch (NoSuchFileException nsfe) {
+			unTrimedNewPath = nsfe.toString();
+			index = unTrimedNewPath.indexOf(": ");
+			newPath = unTrimedNewPath.substring(index+2);
+			sb.append(newPath);
+		}
 		sb.append("</td></tr>");
 	}
 }
-sb.append("</table>");
+sb.append("</table></div>");
 
 out.println(sb.toString());
 
