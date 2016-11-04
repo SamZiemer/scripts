@@ -1,11 +1,5 @@
 #!/bin/bash
 #Java 8
-sudo update-alternatives --install "/usr/bin/java" "java" "/opt/java/jdk1.8.0_51/bin/java" 1
-sudo update-alternatives --set java /opt/java/jdk1.8.0_51/bin/java
-JRE_HOME=/opt/java/jdk1.8.0_51/jre
-JAVA_HOME=/opt/java/jdk1.8.0_51
-java -version
-
-sudo update-alternatives --install "/usr/bin/javac" javac "/opt/java/jdk1.8.0_51/bin/javac" 1
-sudo update-alternatives --config javac
-javac -version
+/usr/local/bin/jenv global oracle64-1.8.0.102
+JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_102.jdk/Contents/Home/
+export JAVA_HOME
