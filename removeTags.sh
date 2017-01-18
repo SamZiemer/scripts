@@ -1,7 +1,7 @@
 #!/bin/bash
 
 tags=(
-
+	
 )
 
 for i in "${tags[@]}"
