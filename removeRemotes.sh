@@ -1,7 +1,7 @@
 #!/bin/bash
 
 branches=(
-
+  
 )
 
 for i in "${branches[@]}"

@@ -7,14 +7,12 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="lib" />
     <orderEntry type="module" module-name="portal-impl" />
-    <orderEntry type="module" module-name="portal-service" />
     <orderEntry type="module" module-name="portal-web" />
     <orderEntry type="module" module-name="util-bridges" />
     <orderEntry type="module" module-name="util-java" />
     <orderEntry type="module" module-name="util-taglib" />
-    <orderEntry type="library" name="groovy-2.4.5" level="application" />
     <orderEntry type="library" name="org.codehaus.groovy:groovy-all:2.2.1" level="application" />
+    <orderEntry type="module" module-name="portal-kernel" />
   </component>
 </module>
