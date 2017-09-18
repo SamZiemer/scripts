@@ -1,0 +1,19 @@
+source ~/.bash_aliases
+
+clear
+cd ~/repos/liferay-portal-ee/
+git checkout -f .
+git clean -fd
+rm -rf modules/apps/foundation/frontend-theme/
+#rm -rf modules/private/apps/foundation/frontend-theme/
+aa
+git checkout -f .
+git clean -fd
+git checkout modules/apps/foundation/frontend-theme/
+#git checkout modules/private/apps/foundation/frontend-theme/
+cd modules/apps/foundation/frontend-theme/
+gcd
+cd ~/repos/liferay-portal-ee/
+#cd modules/private/apps/foundation/frontend-theme/
+#gcd
+#cd ~/repos/liferay-portal-ee/

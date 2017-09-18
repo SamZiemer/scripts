@@ -10,7 +10,7 @@ count=${3:-10}  # defaults to 10 times
 delay=${4:-0.5} # defaults to 0.5 seconds
 while [ $count -gt 0 ]
 do
-    sudo -u $user jstack -l $pid >threadDump.$pid.$(date +%H%M%S.%N)
+    sudo -u $user jstack -l $pid >threadDump.$pid.$(date +%H%M%S)
     sleep $delay
     let count--
     echo -n "."
