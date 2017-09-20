@@ -1,7 +1,8 @@
-ANT_OPTS="-Xmx4096m -XX:MaxPermSize=1024m"
-MYSQL_HOME="/usr/local/mysql/bin"
-PATH=$PATH:~/scripts:~/Library/PackageManager/bin:$MYSQL_HOME:/Users/ziemers/miniconda3/bin
-export ANT_OPTS PATH
+ANT_OPTS="-Xmx8192m -XX:MaxPermSize=2048m"
+JAVA_HOME="/opt/java/jdk1.8.0_144"
+JRE_HOME="/opt/java/jdk1.8.0_144/jre"
+PATH=$PATH:~/scripts/bin:$JAVA_HOME/bin:/home/ziemers/miniconda3/bin
+export ANT_OPTS PATH JAVA_HOME JRE_HOME
 
 ## ALIASES ##
 ##alias aa='ant all'
@@ -30,21 +31,22 @@ alias jca="java -jar ~/Applications/jca/jca.jar"
 alias kazissh="ssh sam@jktest.hopto.org"
 alias mysqlp='mysql -u root -ppassword'
 alias run="clear && printf '\e[3J' ./catalina.sh run;"
-alias s61="cd /Users/ziemers/servers/liferay-portal-ee-6.1.x/tomcat-7.0.42/bin/"
-alias s62="cd /Users/ziemers/servers/liferay-portal-ee-6.2.x/tomcat-7.0.42/bin/"
-alias see="cd /Users/ziemers/servers/liferay-portal-ee/tomcat-8.0.32/bin/"
-alias smaster="cd /Users/ziemers/servers/liferay-portal/tomcat-8.0.32/bin/"
+alias s61="cd /home/ziemers/servers/liferay-portal-ee-6.1.x/tomcat-7.0.42/bin/"
+alias s62="cd /home/ziemers/servers/liferay-portal-ee-6.2.x/tomcat-7.0.42/bin/"
+alias see="cd /home/ziemers/servers/liferay-portal-ee/tomcat-8.0.32/bin/"
+alias smaster="cd /home/ziemers/servers/liferay-portal/tomcat-8.0.32/bin/"
 alias sp3="git checkout fix-pack-base-6130-sp3"
 alias sp7="git checkout fix-pack-base-6210-sp7"
 alias sp10="git checkout fix-pack-base-6210-sp10"
 alias sp13="git checkout fix-pack-base-6210-sp13"
 alias sp15="git checkout fix-pack-base-6210-sp15"
 alias sp20="git checkout fix-pack-base-6210-sp20"
-alias r61="cd /Users/ziemers/repos/liferay-portal-ee-6.1.x"
-alias r62="cd /Users/ziemers/repos/liferay-portal-ee-6.2.x"
-alias rmaster="cd /Users/ziemers/repos/liferay-portal"
-alias ree="cd /Users/ziemers/repos/liferay-portal-ee"
-alias refreshbash="source ~/.profile"
+alias r61="cd /home/ziemers/repos/liferay-portal-ee-6.1.x"
+alias r62="cd /home/ziemers/repos/liferay-portal-ee-6.2.x"
+alias r70x="cd /home/ziemers/repos/liferay-portal-ee-7.0.x"
+alias rmaster="cd /home/ziemers/repos/liferay-portal"
+alias ree="cd /home/ziemers/repos/liferay-portal-ee"
+alias refreshbash="source ~/.bashrc"
 alias bsp7="cd ~/bundles/liferay-portal-6.2.10-sp7/tomcat-7.0.42/bin/"
 alias b62="cd ~/bundles/liferay-portal-6.2.10/tomcat-7.0.42/bin/"
 alias b6120="cd ~/bundles/liferay-portal-6.1.20/tomcat-7.0.27/bin/"
@@ -58,10 +60,10 @@ alias gmu='merge_upstream'
 
 ############# FUNCTIONS BEGIN ################
 
-MCD_RD_CLONE_PATH=/Users/ziemers/repos/liferay-faster-deploy
+#MCD_RD_CLONE_PATH=/home/ziemers/repos/liferay-faster-deploy
 
 function subrepobp() {
-        SUBREPO_ROOT=/Users/ziemers/repos \
+        SUBREPO_ROOT=/home/ziemers/repos \
                 ${MCD_RD_CLONE_PATH}/patcher/subrepobp $@
 }
 
@@ -165,10 +167,6 @@ gau() {
 	git update-index --assume-unchanged $1
 }
 
-sublime() {
-	/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl $1
-}
-
 #####################################
 ############ MCD UTILS ##############
 #####################################
@@ -202,18 +200,26 @@ ec2up() {
 
 ## end AWS ##
 
+
+IJ_CLONE_PATH=/home/ziemers/trainings/liferay-intellij
+
+ij() {
+        ${IJ_CLONE_PATH}/intellij "$@"
+}
+
+
 ## CD changes ##
 
 cd() {
-        . /Users/ziemers/repos/liferay-faster-deploy/gitcd/gitcd $@
+        . /home/ziemers/repos/liferay-faster-deploy/gitcd/gitcd $@
 }
 
 cdb() {
-        . /Users/ziemers/repos/liferay-faster-deploy/gitcd/gitcdb $@
+        . /home/ziemers/repos/liferay-faster-deploy/gitcd/gitcdb $@
 }
 
 cdp() {
-        . /Users/ziemers/repos/liferay-faster-deploy/gitcd/gitcdp $@
+        . /home/ziemers/repos/liferay-faster-deploy/gitcd/gitcdp $@
 }
 
 ## end CD changes ##
@@ -346,7 +352,7 @@ function gitprs() {
 	URL=$(git pull-request -m "$(getPullRequestTitleAndBody $LPS)" -b $REVIEWER:$REMOTEBRANCH -h SamZiemer:$BRANCH)
 
 	echo $URL
-	echo -n $URL | pbcopy
+	echo -n $URL | xclip -selection clipboard
 
 	# Write a comment on the reviewed pull request
 	gitprsubmitcomment $REVIEWER $URL $REPO $PULLREQUESTNUMBER
