@@ -14,8 +14,7 @@ alias ad='ant deploy'
 alias adf='ant deploy-fast'
 alias afs='ant format-source-current-branch'
 alias clean='git checkout .; git clean -fd;'
-alias dbg="clear && printf '\e[3J'; ./catalina.sh jpda run;"
-alias dsr='find . -name '.DS_Store' -type f -delete'
+alias dbg="./catalina.sh jpda run"
 alias git="hub"
 alias gbv="git bisect visualize"
 alias gc="git checkout"
@@ -23,7 +22,7 @@ alias gcp="git cherry-pick"
 alias gcpc="git cherry-pick --continue"
 alias gfo='git fetch origin'
 alias gfu='git fetch upstream'
-alias gitfullclean='git clean -xfd -e "*.iml" -e "*ziemers*" -e "*.idea/"'
+alias gitfullclean='git clean -xfd -e "*.iml" -e "*ziemers*" -e "*.idea/" -e "lib"'
 alias gmt="git mergetool"
 alias gl='git stash list'
 alias gs='git status'
@@ -31,11 +30,10 @@ alias heapdump="jps | grep -oP '\d+ Bootstrap' | grep -oP '\d+' | xargs jmap -du
 alias ignored='git ls-files -v | grep ^[a-z]'
 alias java7="source java7.sh"
 alias java8="source java8.sh"
-alias jca="java -jar ~/Applications/jca/jca.jar"
 alias kazissh="ssh sam@jktest.hopto.org"
 alias kb="jps | grep -oP '\d+ Bootstrap' | grep -oP '\d+' | xargs kill -9"
 alias mysqlp='mysql -uroot -ppassword'
-alias run="clear; ./catalina.sh run;"
+alias run="./catalina.sh run"
 alias s61="cd /home/ziemers/servers/liferay-portal-ee-6.1.x/tomcat-7.0.42/bin/"
 alias s62="cd /home/ziemers/servers/liferay-portal-ee-6.2.x/tomcat-7.0.42/bin/"
 alias see="cd /home/ziemers/servers/liferay-portal-ee/tomcat-8.0.32/bin/"
@@ -48,8 +46,7 @@ alias sp15="git checkout fix-pack-base-6210-sp15"
 alias sp20="git checkout fix-pack-base-6210-sp20"
 alias r61="cd /home/ziemers/repos/liferay-portal-ee-6.1.x"
 alias r62="cd /home/ziemers/repos/liferay-portal-ee-6.2.x"
-alias r70x="cd /home/ziemers/repos/liferay-portal-ee-7.0.x"
-alias r70xp="cd /home/ziemers/repos/liferay-portal-ee-7.0.x-private"
+alias r70x="cd /home/ziemers/repos/liferay-portal-ee-7.0.x-private"
 alias rmaster="cd /home/ziemers/repos/liferay-portal"
 alias ree="cd /home/ziemers/repos/liferay-portal-ee"
 alias refreshbash="source ~/.bashrc"
@@ -59,8 +56,8 @@ alias b6120="cd ~/bundles/liferay-portal-6.1.20/tomcat-7.0.27/bin/"
 alias taketd="jstackSeries.sh"
 alias td="jps | grep -oP '\d+ Bootstrap' | grep -oP '\d+' | xargs jstack"
 alias tdu="jps | grep -oP '\d+ DBUpgraderLauncher' | grep -oP '\d+' | xargs jstack"
-alias upgrade='clear && printf "\e[3J"; java -jar com.liferay.portal.tools.db.upgrade.client.jar -j="-Xmx4096m"'
-alias upgradedbg='clear && printf "\e[3J"; java -jar com.liferay.portal.tools.db.upgrade.client.jar -j="-Xmx4096m -Dfile.encoding=UTF8 -Duser.country=US -Duser.language=en -Duser.timezone=GMT -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000"'
+alias upgrade='java -jar com.liferay.portal.tools.db.upgrade.client.jar -j="-Xmx8192m"'
+alias upgradedbg='java -jar com.liferay.portal.tools.db.upgrade.client.jar -j="-Xmx8192m -Dfile.encoding=UTF8 -Duser.country=US -Duser.language=en -Duser.timezone=GMT -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000"'
 
 alias ss='show_stash'
 alias as='apply_stash'
@@ -107,6 +104,14 @@ function aa() {
 function gpr() {
 	SUBREPO_ROOT=/home/ziemers/repos/ \
 		${MCD_RD_CLONE_PATH}/github/pullrequest $@
+}
+
+filtererror() {
+	${MCD_RD_CLONE_PATH}/logparse/filtererror $@
+}
+
+upgradetimes() {
+	${MCD_RD_CLONE_PATH}/logparse/upgradetimes $@
 }
 
 function dump () {
@@ -210,6 +215,18 @@ ec2up() {
 	else
 		echo set EC2_HOST
 	fi
+}
+
+ec2win() {
+    local WIN_HOST=$1
+
+    if [ "" == "$1" ]; then
+        ec2host
+
+        WIN_HOST=$EC2_HOST
+    fi
+
+    xfreerdp +clipboard -themes -wallpaper -mouse-motion +compression /size:1280x960 /u:Administrator /v:$WIN_HOST
 }
 
 ## end AWS ##
@@ -454,8 +471,6 @@ function getSubmitterGithubName() {
 				"bryan.engler@liferay.com") SUBMITTER=" @BryanEngler"
 					;;
 				"christopher.kian@liferay.com") SUBMITTER=" @ChrisKian"
-					;;
-				"dustin.ryerson@liferay.com") SUBMITTER=" @dustinryerson"
 					;;
 				"eric.yan@liferay.com") SUBMITTER=" @ericyanLr"
 					;;

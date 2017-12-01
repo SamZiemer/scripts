@@ -847,5 +847,6 @@
     <orderEntry type="module" module-name="xsl-content-web" />
     <orderEntry type="module" module-name="xstream-configurator-api" />
     <orderEntry type="module" module-name="youtube-web" />
+    <orderEntry type="module" module-name="portal-service" />
   </component>
 </module>
