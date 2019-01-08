@@ -1,6 +1,9 @@
 #!/bin/bash
 if [[ $# -eq 0 ]]; then
 	pid=$(jps | grep -oP '\d+ Bootstrap' | grep -oP '\d+')
+	if [[ $pid -eq '' ]]; then
+		pid=$(jps | grep -oP '\d+ DBUpgraderLauncher' | grep -oP '\d+')
+	fi
 	count=${2:-10}
 	delay=${3:-0.5}
 

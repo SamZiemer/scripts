@@ -4,9 +4,9 @@ JRE_HOME="/opt/java/jdk1.8.0_144/jre"
 PATH=$PATH:~/scripts/:$JAVA_HOME/bin:/home/ziemers/miniconda3/bin
 export ANT_OPTS PATH JAVA_HOME JRE_HOME
 
-GITHUB_USERNAMES="adolfopa, arboliveira, brandizzi, danielkocsis, drewbrokke, dustinryerson, ealonso, epgarcia, hhuijser, holatuwol, igorspasic, johnnyhowey, jonmak08, jorgeferrer, juliocamarero, marcellustavares, matethurzo, mhan810, pei-jung, rotty3000, sergiogonzalez, shinnlok, shuyangzhou, topolik, zoltantakacs"
+GITHUB_USERNAMES="achaparro, adolfopa, alec-shay, arboliveira, brandizzi, csierra, dacousalr, danielkocsis, drewbrokke, ealonso, epgarcia, hhuijser, holatuwol, igorspasic, inacionery, jbalsas, jeyvison, jkappler, johnnyhowey, jonathanmccann, jonmak08, jorgeferrer, juliocamarero, liferay, marcellustavares, matethurzo, mhan810, michaelprigge, pei-jung, preston-crary, rafaprax, rotty3000, sergiogonzalez, shinnlok, shuyangzhou, topolik, zoltantakacs"
 
-OAUTHTOKEN="9271984a0bcb122e0a0c7ff562feb1b6c5403ee4"
+OAUTHTOKEN="4c905b9d1dcd97c768cf7809cb67d3846e686f4c"
 
 ## ALIASES ##
 ##alias aa='ant all'
@@ -15,14 +15,16 @@ alias adf='ant deploy-fast'
 alias afs='ant format-source-current-branch'
 alias clean='git checkout .; git clean -fd;'
 alias dbg="./catalina.sh jpda run"
+alias dirstat="qdirstat"
 alias git="hub"
 alias gbv="git bisect visualize"
 alias gc="git checkout"
 alias gcp="git cherry-pick"
 alias gcpc="git cherry-pick --continue"
+alias getu="~/scripts/getu.sh"
 alias gfo='git fetch origin'
 alias gfu='git fetch upstream'
-alias gitfullclean='git clean -xfd -e "*.iml" -e "*ziemers*" -e "*.idea/" -e "lib"'
+alias gitfullclean='git clean -xfd -e "**/*.iml" -e "*ziemers*" -e ".idea/" -e "lib"'
 alias gmt="git mergetool"
 alias gl='git stash list'
 alias gs='git status'
@@ -30,14 +32,17 @@ alias heapdump="jps | grep -oP '\d+ Bootstrap' | grep -oP '\d+' | xargs jmap -du
 alias ignored='git ls-files -v | grep ^[a-z]'
 alias java7="source java7.sh"
 alias java8="source java8.sh"
-alias kazissh="ssh sam@jktest.hopto.org"
 alias kb="jps | grep -oP '\d+ Bootstrap' | grep -oP '\d+' | xargs kill -9"
 alias mysqlp='mysql -uroot -ppassword'
 alias run="./catalina.sh run"
 alias s61="cd /home/ziemers/servers/liferay-portal-ee-6.1.x/tomcat-7.0.42/bin/"
 alias s62="cd /home/ziemers/servers/liferay-portal-ee-6.2.x/tomcat-7.0.42/bin/"
-alias see="cd /home/ziemers/servers/liferay-portal-ee/tomcat-8.0.32/bin/"
+alias s70="cd /home/ziemers/servers/liferay-portal-ee-7.0.x/tomcat-8.0.32/bin/"
+alias s70p="cd /home/ziemers/servers/liferay-portal-ee-7.0-private/tomcat-8.0.32/bin/"
+alias see="cd /home/ziemers/servers/liferay-portal-ee/tomcat-9.0.10/bin/"
+alias seep="cd /home/ziemers/servers/liferay-portal-ee-private/tomcat-8.0.32/bin/"
 alias smaster="cd /home/ziemers/servers/liferay-portal/tomcat-8.0.32/bin/"
+alias smasterp="cd /home/ziemers/servers/master-private/tomcat-9.0.10/bin/"
 alias sp3="git checkout fix-pack-base-6130-sp3"
 alias sp7="git checkout fix-pack-base-6210-sp7"
 alias sp10="git checkout fix-pack-base-6210-sp10"
@@ -46,9 +51,12 @@ alias sp15="git checkout fix-pack-base-6210-sp15"
 alias sp20="git checkout fix-pack-base-6210-sp20"
 alias r61="cd /home/ziemers/repos/liferay-portal-ee-6.1.x"
 alias r62="cd /home/ziemers/repos/liferay-portal-ee-6.2.x"
-alias r70x="cd /home/ziemers/repos/liferay-portal-ee-7.0.x-private"
+alias r70="cd /home/ziemers/repos/liferay-portal-ee-7.0.x"
+alias r70p="cd /home/ziemers/repos/liferay-portal-ee-7.0.x-private"
+alias rmasterp="cd /home/ziemers/repos/master-private"
 alias rmaster="cd /home/ziemers/repos/liferay-portal"
 alias ree="cd /home/ziemers/repos/liferay-portal-ee"
+alias reep="cd /home/ziemers/repos/liferay-portal-ee-private"
 alias refreshbash="source ~/.bashrc"
 alias bsp7="cd ~/bundles/liferay-portal-6.2.10-sp7/tomcat-7.0.42/bin/"
 alias b62="cd ~/bundles/liferay-portal-6.2.10/tomcat-7.0.42/bin/"
@@ -68,8 +76,8 @@ alias gmu='merge_upstream'
 MCD_RD_CLONE_PATH=/home/ziemers/repos/liferay-faster-deploy
 
 function subrepobp() {
-        SUBREPO_ROOT=/home/ziemers/repos \
-                ${MCD_RD_CLONE_PATH}/patcher/subrepobp $@
+	SUBREPO_ROOT=/home/ziemers/repos \
+		${MCD_RD_CLONE_PATH}/patcher/subrepobp $@
 }
 
 function aa() {
@@ -139,6 +147,11 @@ function newdb () {
 	mysqlp -e "create database $1 character set utf8;"
 }
 
+function ti() {
+	#$1 = class name of the test class
+	gw testIntegration --tests *.$1
+}
+
 function show_stash () {
 	git stash show -p stash@{$1}
 }
@@ -158,6 +171,34 @@ function gft () {
 function gpo () {
 	BRANCH_NAME=$(git branch | awk '/\*/ { print $2; }')
 	git push origin "$BRANCH_NAME"
+}
+
+function gitpushlargebranch () {
+	# Adjust the following variables as necessary
+	REMOTE=origin
+	BRANCH=$(git rev-parse --abbrev-ref HEAD)
+	BATCH_SIZE=5000
+
+	# check if the branch exists on the remote
+	if git show-ref --quiet --verify refs/remotes/$REMOTE/$BRANCH; then
+	    # if so, only push the commits that are not on the remote already
+	    range=$REMOTE/$BRANCH..HEAD
+	else
+	    # else push all the commits
+	    range=HEAD
+	fi
+	# count the number of commits to push
+	n=$(git log --first-parent --format=format:x $range | wc -l)
+
+	# push each batch
+	for i in $(seq $n -$BATCH_SIZE 1); do
+	    # get the hash of the commit to push
+	    h=$(git log --first-parent --reverse --format=format:%H --skip $i -n1)
+	    echo "Pushing $h..."
+	    git push $REMOTE $h:refs/heads/$BRANCH
+	done
+	# push the final partial batch
+	git push $REMOTE HEAD:refs/heads/$BRANCH
 }
 
 gw() {
@@ -218,39 +259,39 @@ ec2up() {
 }
 
 ec2win() {
-    local WIN_HOST=$1
+	local WIN_HOST=$1
 
-    if [ "" == "$1" ]; then
-        ec2host
+	if [[ "" == "$1" ]] && [[ '' == $EC2_HOST ]]; then
+		ec2host
 
-        WIN_HOST=$EC2_HOST
-    fi
+		WIN_HOST=$EC2_HOST
+	fi
 
-    xfreerdp +clipboard -themes -wallpaper -mouse-motion +compression /size:1280x960 /u:Administrator /v:$WIN_HOST
+	xfreerdp +clipboard -themes -wallpaper -mouse-motion +compression /size:1280x960 /u:Administrator /v:$WIN_HOST
 }
 
 ## end AWS ##
 
 
-IJ_CLONE_PATH=/home/ziemers/trainings/liferay-intellij
+IJ_CLONE_PATH=/home/ziemers/repos/liferay-intellij
 
 ij() {
-        ${IJ_CLONE_PATH}/intellij "$@"
+	${IJ_CLONE_PATH}/intellij "$@"
 }
 
 
 ## CD changes ##
 
 cd() {
-        . /home/ziemers/repos/liferay-faster-deploy/gitcd/gitcd $@
+	. /home/ziemers/repos/liferay-faster-deploy/gitcd/gitcd $@
 }
 
 cdb() {
-        . /home/ziemers/repos/liferay-faster-deploy/gitcd/gitcdb $@
+	. /home/ziemers/repos/liferay-faster-deploy/gitcd/gitcdb $@
 }
 
 cdp() {
-        . /home/ziemers/repos/liferay-faster-deploy/gitcd/gitcdp $@
+	. /home/ziemers/repos/liferay-faster-deploy/gitcd/gitcdp $@
 }
 
 ## end CD changes ##
@@ -300,7 +341,11 @@ function getPullRequestTitleAndBody() {
 
 function getReviewerActualName() {
 	case "$1" in
+		"achaparro") echo "Alberto"
+			;;
 		"adolfopa") echo "Adolfo"
+			;;
+		"alec-shay") echo "Alec"
 			;;
 		"arboliveira") echo "André"
 			;;
@@ -308,11 +353,13 @@ function getReviewerActualName() {
 			;;
 		"brianchandotcom") echo "Brian"
 			;;
+		"csierra") echo "Carlos"
+			;;
+		"dacousalr") echo "Daniel"
+			;;
 		"danielkocsis") echo "Daniel"
 			;;
 		"drewbrokke") echo "Drew"
-			;;
-		"dustinryerson") echo "Dustin"
 			;;
 		"ealonso") echo "Eudaldo"
 			;;
@@ -320,13 +367,25 @@ function getReviewerActualName() {
 			;;
 		"hhuijser") echo "Hugo"
 			;;
+		"liferay") echo "Enterprise Release HU"
+			;;
 		"holatuwol") echo "Minhchau"
 			;;
 		"igorspasic") echo "Igor"
 			;;
+		"inacionery") echo "Inácio"
+			;;
 		"ipeychev") echo "Iliyan"
 			;;
+		"jbalsas") echo "Chema"
+			;;
+		"jeyvison") echo "Jeyvison"
+			;;
+		"jkappler") echo "Jürgen"
+			;;
 		"johnnyhowey") echo "Jon"
+			;;
+		"jonathanmccann") echo "Jonathan"
 			;;
 		"jonmak08") echo "Jon"
 			;;
@@ -340,7 +399,13 @@ function getReviewerActualName() {
 			;;
 		"mhan810") echo "Mike"
 			;;
+		"michael.prigge") echo "Michael"
+			;;
 		"pei-jung") echo "Pei-Jung"
+			;;
+		"preston-crary") echo "Preston"
+			;;
+		"rafaprax") echo "Rafael"
 			;;
 		"rotty3000") echo "Ray"
 			;;
@@ -365,9 +430,13 @@ function getReviewerJIRAName() {
 			;;
 		"arboliveira") echo "andre.oliveira"
 			;;
+		"alec-shay") echo "alec.shay"
+			;;
 		"brandizzi") echo "adam.brandizzi"
 			;;
 		"brianchandotcom") echo "brian.chan"
+			;;
+		"csierra") echo "carlos.sierra"
 			;;
 		"danielkocsis") echo "daniel.kocsis"
 			;;
@@ -385,21 +454,31 @@ function getReviewerJIRAName() {
 			;;
 		"igorspasic") echo "igor.spasic"
 			;;
+		"inacionery") echo "inacio.nery"
+			;;
 		"ipeychev") echo "iliyan.peychev"
 			;;
 		"johnnyhowey") echo "jonathan.lee"
+			;;
+		"jonathanmccann") echo "jonathan.mccann"
 			;;
 		"jonmak08") echo "jonathan.mak"
 			;;
 		"jorgeferrer") echo "jorge.ferrer"
 			;;
+		"jkappler") echo "jurgen.kappler"
+			;;
 		"juliocamarero") echo "julio.camarero"
+			;;
+		"liferay") echo "EnterpriseReleaseHU"
 			;;
 		"marcellustavares") echo "marcellus.tavares"
 			;;
 		"matethurzo") echo "mate.thurzo"
 			;;
 		"mhan810") echo "michael.han"
+			;;
+		"michaelprigge") echo "michael.prigge"
 			;;
 		"pei-jung") echo "pei-jung.lan"
 			;;
@@ -433,9 +512,12 @@ function getSubmitterGithubName() {
 	elif [[ "$PWD2" == liferay-plugins ]]
 	then
 		MASTER="upstream/master"
+	elif [[ "$PWD2" == liferay-portal-ee ]]
+	then
+		MASTER="upstream/7.1.x"
 	elif [[ "$PWD2" == liferay-portal-ee-7.0.x ]]
 	then
-		MASTER="upstream/ee-7.0.x"
+		MASTER="upstream/7.0.x"
 	elif [[ "$PWD2" == liferay-portal-ee-6.2.x ]]
 	then
 		MASTER="upstream/ee-6.2.x"
@@ -478,11 +560,11 @@ function getSubmitterGithubName() {
 					;;
 				"joshua.cords@liferay.com") SUBMITTER=" @joshuacords"
 					;;
+				"lianne.louie@liferay.com") SUBMITTER=" @wanderlast"
+					;;
 				"michael.bowerman@liferay.com") SUBMITTER=" @mbowerman"
 					;;
 				"michael.prigge@liferay.com") SUBMITTER=" @MichaelPrigge"
-					;;
-				"nolan.chan@liferay.com") SUBMITTER=" @NolanChan"
 					;;
 				"Jonathan.McCann@liferay.com") SUBMITTER=" @JonathanMcCann"
 					;;
@@ -518,7 +600,7 @@ function gitprsubmitcomment() {
 
 	BODY="Reviewed and sent to $REVIEWERACTUALNAME for further review: $2"
 
-	curl --silent -u $OAUTHTOKEN:x-oauth-basic --data '{"body":"'"$BODY"'"}' https://api.github.com/repos/samziemer/$3/issues/$4/comments > /dev/null
+	curl --silent -u $OAUTHTOKEN:x-oauth-basic --data '{"body":"'"$BODY"'"}' https://api.github.com/repos/samziemer/$3/issues/$4/comments
 }
 
 function gitprf() {
@@ -532,7 +614,7 @@ function gitprf() {
 	elif [[ "$PWD2" == liferay-plugins ]]
 	then
 		git checkout https://github.com/samziemer/liferay-plugins/pull/$1
-	elif [[ "$PWD2" == liferay-portal-ee-* ]]
+	elif [[ "$PWD2" == liferay-portal-ee* ]]
 	then
 		git checkout https://github.com/samziemer/liferay-portal-ee/pull/$1
 	elif [[ "$PWD2" == liferay-plugins-ee-* ]]
@@ -582,9 +664,13 @@ function gitprs() {
 	then
 		REMOTEBRANCH="master"
 		REPO="liferay-plugins"
+	elif [[ "$PWD2" == liferay-portal-ee ]]
+	then
+		REMOTEBRANCH="7.1.x"
+		REPO="liferay-portal-ee"
 	elif [[ "$PWD2" == liferay-portal-ee-7.0.x ]]
 	then
-		REMOTEBRANCH="ee-7.0.x"
+		REMOTEBRANCH="7.0.x"
 		REPO="liferay-portal-ee"
 	elif [[ "$PWD2" == liferay-portal-ee-6.2.x ]]
 	then
@@ -636,9 +722,13 @@ function gitprs() {
 	gitprsubmitcomment $REVIEWER $URL $REPO $PULLREQUESTNUMBER
 	# Close the reviewed pull request
 	gitprclose $REPO $PULLREQUESTNUMBER
+	# Write a comment on the new pull request to trigger the CI tests
+	FORWARDEDPULLREQUESTNUMBER=${URL##*/}
+
+	curl --silent -u $OAUTHTOKEN:x-oauth-basic --data '{"body":"ci:test:relevant"}' https://api.github.com/repos/$REVIEWER/$REPO/issues/$FORWARDEDPULLREQUESTNUMBER/comments > /dev/null
 
 	# Push the LPS through the proper workflow
-	pushLPSThroughWorkflow $REVIEWER $LPS $URL
+	#pushLPSThroughWorkflow $REVIEWER $LPS $URL
 }
 
 function gitprsb() {

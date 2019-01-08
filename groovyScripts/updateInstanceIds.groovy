@@ -10,7 +10,7 @@ import java.sql.Statement;
 
 String _INSTANCE_SEPARATOR = "_INSTANCE_";
 
-PortletPreferencesModelImpl pref = PortletPreferencesLocalServiceUtil.fetchPortletPreferences(872295);
+PortletPreferencesModelImpl pref = PortletPreferencesLocalServiceUtil.fetchPortletPreferences(1431776);
 
 String oldPortletId = pref.getPortletId();
 
@@ -20,7 +20,7 @@ Connection con = null;
 Statement st = null;
 try {
 	con = DataAccess.getUpgradeOptimizedConnection();
-	PreparedStatement ps1 = con.prepareStatement("update portletPreferences set portletId = ? where portletPreferencesId = 872295");
+	PreparedStatement ps1 = con.prepareStatement("update portletPreferences set portletId = ? where portletPreferencesId = 1431776");
 	ps1.setString(1, newPortletId);
 	ps1.executeUpdate();
 

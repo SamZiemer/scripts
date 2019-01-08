@@ -7,13 +7,13 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="portal-impl" />
-    <orderEntry type="module" module-name="portal-web" />
-    <orderEntry type="module" module-name="util-bridges" />
-    <orderEntry type="module" module-name="util-java" />
-    <orderEntry type="module" module-name="util-taglib" />
+    <orderEntry type="module" module-name="portal-impl" exported="" />
+    <orderEntry type="module" module-name="portal-web" exported="" />
+    <orderEntry type="module" module-name="util-bridges" exported="" />
+    <orderEntry type="module" module-name="util-taglib" exported="" />
+    <orderEntry type="module" module-name="util-java" exported="" />
     <orderEntry type="library" name="org.codehaus.groovy:groovy-all:2.2.1" level="application" />
-    <orderEntry type="module" module-name="portal-kernel" />
+    <orderEntry type="module" module-name="portal-kernel" exported="" />
     <orderEntry type="module" module-name="alloy-mvc" />
     <orderEntry type="module" module-name="amazon-rankings-web" />
     <orderEntry type="module" module-name="announcements-web" />
@@ -847,6 +847,6 @@
     <orderEntry type="module" module-name="xsl-content-web" />
     <orderEntry type="module" module-name="xstream-configurator-api" />
     <orderEntry type="module" module-name="youtube-web" />
-    <orderEntry type="module" module-name="portal-service" />
+    <orderEntry type="module" module-name="portal-service" exported="" />
   </component>
 </module>
